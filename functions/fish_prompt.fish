@@ -17,7 +17,14 @@ function fish_prompt
 
 
   set -l cwd $cyan(basename (prompt_pwd))
-
+  
+  set -l uid (id -u)
+  if [ $uid -eq 0 ]
+    set prompt '#'
+  else
+    set prompt '$'
+  end
+  
   if [ (_git_branch_name) ]
     set -l git_branch $green(_git_branch_name)
     set git_info "$normal($green$git_branch"
@@ -33,9 +40,9 @@ function fish_prompt
   echo -n -s $normal '[' $white (whoami) $normal '@' $red (hostname -s) $normal ' ' $cwd ' '  $git_info $normal ']'
   # If the width is too small, print a newline before the prompt
   if [ (tput cols) -le 50 ]
-    printf '\n$ '
+    printf "\n$prompt "
   else
-    echo -n '$ '
+    echo -n "$prompt "
   end
 end
 
