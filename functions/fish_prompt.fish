@@ -30,6 +30,12 @@ function fish_prompt
     set git_info "$git_info$normal)"
   end
 
-  echo -n -s $normal '[' $white (whoami) $normal '@' $red (hostname -s) $normal ' ' $cwd ' '  $git_info $normal ']$ '
+  echo -n -s $normal '[' $white (whoami) $normal '@' $red (hostname -s) $normal ' ' $cwd ' '  $git_info $normal ']'
+  # If the width is too small, print a newline before the prompt
+  if [ (tput cols) -le 50 ]
+    printf '\n$ '
+  else
+    echo -n '$ '
+  end
 end
 
